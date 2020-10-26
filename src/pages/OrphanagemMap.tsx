@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Dimensions, TouchableOpacity, FlatList } from '
 import MapView, {Marker, Callout}  from 'react-native-maps';
 import mapMarker from '../images/map-marker.png';
 import {Feather} from '@expo/vector-icons';
-import {useNavigation} from '@react-navigation/native'
+import {useNavigation, useFocusEffect} from '@react-navigation/native'
 import api from '../services/api'
 
 interface DataOrphanats{
@@ -34,14 +34,14 @@ export default function Mapa() {
     navigator.navigate('MapPosition');
   }
 
-  useEffect(() =>{
+  useFocusEffect(() =>{
     getOrphanages();
-  }, [])
+  })
 
   return (
     <View style={styles.container}>
       <MapView style={styles.map} 
-      initialRegion={{
+        initialRegion={{
         latitude: 0.0945352,
         longitude: -51.1271811,
         latitudeDelta: 0.008,
@@ -50,9 +50,9 @@ export default function Mapa() {
           {orphanats.map(item=>{
             return(
             <Marker 
-            key={item.id}
-            icon={mapMarker}
-            coordinate={{
+              key={item.id}
+              icon={mapMarker}
+              coordinate={{
               latitude: item.latitude, 
               longitude: item.longitude
               }}
@@ -63,14 +63,14 @@ export default function Mapa() {
                 <Callout tooltip
                 onPress={()=>goToOrphanagemDetail(item.id)}>
                   <View style={styles.calloutContainer}>
-            <Text style={styles.calloutText}>{item.name}</Text>
+                    <Text style={styles.calloutText}>{item.name}</Text>
                   </View>
                 </Callout>
             </Marker>
           )})}          
         </MapView>
         <View style={styles.footer}>
-          <Text style={styles.footerText}>{orphanats.length}orfanatos encontrado</Text>
+          <Text style={styles.footerText}>{orphanats.length} orfanatos encontrado</Text>
           <TouchableOpacity style={styles.footerToch} onPress={registerNewOrphanage}>
             <Feather name="plus" size={20} color='#FFF' />
           </TouchableOpacity>
